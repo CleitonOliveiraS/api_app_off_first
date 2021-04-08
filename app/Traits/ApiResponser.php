@@ -11,19 +11,11 @@ use Illuminate\Pagination\LengthAwarePaginator;
 trait ApiResponser{
     protected function successResponse($data, $message = null, $code = 200)
     {
-        return response()->json([
-            'status'=> 'Success',
-            'message' => $message,
-            'data' => $data
-        ], $code);
+        return response()->json($data, $code);
     }
 
     protected function errorResponse($message = null, $code)
     {
-        return response()->json([
-            'status'=>'Error',
-            'message' => $message,
-            'data' => null
-        ], $code);
+        return response()->json(null, $code);
     }
 }
