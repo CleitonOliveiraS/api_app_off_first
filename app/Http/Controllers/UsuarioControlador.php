@@ -6,6 +6,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class UsuarioControlador extends ApiControlador
 {
@@ -96,7 +97,7 @@ class UsuarioControlador extends ApiControlador
      */
     public function update(Request $request, $id)
     {
-        $usuario = $this->validarUsuario();
+        $usuario = $this->validarUsuarioUpdate($id);
 
         if ($usuario->fails()){
             return $this->errorResponse($usuario->messages(), 422);
@@ -139,6 +140,21 @@ class UsuarioControlador extends ApiControlador
             'nome' => 'required',
             'data_nascimento' => 'required',
             'cpf' => 'required|unique:users',
+            'setor' => 'required',
+        ], [
+            'nome.required' => 'Por favor envie o nome',
+            'data_nascimento.required' => 'Por favor envie a data de nascimento',
+            'cpf.required' => 'Por favor envie o CPF',
+            'cpf.unique' => 'O CPF já existe',
+            'setor' => 'Por favor envie o setor'
+        ]);
+    }
+
+    public function validarUsuarioUpdate($id){
+        return Validator::make(request()->all(), [
+            'nome' => 'required',
+            'data_nascimento' => 'required',
+            'cpf' => ['required', Rule::unique('users', 'cpf')->ignore($id)],
             'setor' => 'required',
         ], [
             'nome.required' => 'Por favor envie o nome',
