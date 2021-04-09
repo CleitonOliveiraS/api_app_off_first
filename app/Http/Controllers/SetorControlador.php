@@ -19,7 +19,7 @@ class SetorControlador extends ApiControlador
         try {
             $setor = Setor::all();
             if (count($setor) <= 0){
-                return $this->errorResponse('Setores não encontrado', 404);
+                return $this->errorResponse(null, 404);
             }
             return $setor;
         }catch (\Exception $e){

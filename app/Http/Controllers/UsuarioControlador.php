@@ -20,7 +20,7 @@ class UsuarioControlador extends ApiControlador
         try {
             $usuario = User::all();
             if (count($usuario) <= 0){
-                return $this->errorResponse('Usuarios não encontrado', 404);
+                return $this->errorResponse(null, 404);
             }
             return $usuario;
         }catch (\Exception $e){

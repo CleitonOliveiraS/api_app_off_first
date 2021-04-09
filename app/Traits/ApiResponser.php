@@ -10,10 +10,15 @@ trait ApiResponser{
 
     protected function errorResponse($message = null, $code)
     {
-        return response()->json([
-            'status'=>'Error',
-            'message' => $message,
-            'data' => null
-        ], $code);
+        if ($message){
+            return response()->json([
+                'status'=>'Error',
+                'message' => $message,
+                'data' => null
+            ], $code);
+        }else{
+            return response()->json(null, $code);
+        }
+
     }
 }
