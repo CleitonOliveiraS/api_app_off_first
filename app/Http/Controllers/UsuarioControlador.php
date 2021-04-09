@@ -56,7 +56,7 @@ class UsuarioControlador extends ApiControlador
             'nome' => $request->get('nome'),
             'data_nascimento' => Carbon::createFromFormat('d/m/Y', $request->get('data_nascimento')),
             'cpf' => $request->get('cpf'),
-            'id_setor' => $request->get('setor'),
+            'id_setor' => $request->get('id_setor'),
         ]);
 
         return $this->successResponse($usuario, 'Usuario Criado', 201);
@@ -109,7 +109,7 @@ class UsuarioControlador extends ApiControlador
                 'nome' => $request->get('nome'),
                 'data_nascimento' => Carbon::createFromFormat('d/m/Y', $request->get('data_nascimento')),
                 'cpf' => $request->get('cpf'),
-                'id_setor' => $request->get('setor'),
+                'id_setor' => $request->get('id_setor'),
             ]);
             return $this->successResponse($usuario, 'Usuario atualizado com sucesso', 200);
         }catch (\Exception $e){
@@ -140,13 +140,13 @@ class UsuarioControlador extends ApiControlador
             'nome' => 'required',
             'data_nascimento' => 'required',
             'cpf' => 'required|unique:users',
-            'setor' => 'required',
+            'id_setor' => 'required',
         ], [
             'nome.required' => 'Por favor envie o nome',
             'data_nascimento.required' => 'Por favor envie a data de nascimento',
             'cpf.required' => 'Por favor envie o CPF',
             'cpf.unique' => 'O CPF já existe',
-            'setor' => 'Por favor envie o setor'
+            'id_setor' => 'Por favor envie o setor'
         ]);
     }
 
@@ -155,13 +155,13 @@ class UsuarioControlador extends ApiControlador
             'nome' => 'required',
             'data_nascimento' => 'required',
             'cpf' => ['required', Rule::unique('users', 'cpf')->ignore($id)],
-            'setor' => 'required',
+            'id_setor' => 'required',
         ], [
             'nome.required' => 'Por favor envie o nome',
             'data_nascimento.required' => 'Por favor envie a data de nascimento',
             'cpf.required' => 'Por favor envie o CPF',
             'cpf.unique' => 'O CPF já existe',
-            'setor' => 'Por favor envie o setor'
+            'id_setor' => 'Por favor envie o setor'
         ]);
     }
 }
