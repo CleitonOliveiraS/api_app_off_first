@@ -20,22 +20,12 @@ class UsuarioControlador extends ApiControlador
         try {
             $usuario = User::all();
             if (count($usuario) <= 0){
-                return $this->errorResponse(null, 404);
+                return $this->errorResponse(null, 200);
             }
             return $usuario;
         }catch (\Exception $e){
             return $this->errorResponse('Falha na conexão', 500);
         }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -57,6 +47,7 @@ class UsuarioControlador extends ApiControlador
             'data_nascimento' => Carbon::createFromFormat('d/m/Y', $request->get('data_nascimento')),
             'cpf' => $request->get('cpf'),
             'id_setor' => $request->get('id_setor'),
+            'senha' => bcrypt($request->get('senha')),
         ]);
 
         return $this->successResponse($usuario, 'Usuario Criado', 201);
@@ -75,17 +66,6 @@ class UsuarioControlador extends ApiControlador
         }catch (\Exception $e){
             return $this->errorResponse('Falha na conexão', 500);
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -110,6 +90,7 @@ class UsuarioControlador extends ApiControlador
                 'data_nascimento' => Carbon::createFromFormat('d/m/Y', $request->get('data_nascimento')),
                 'cpf' => $request->get('cpf'),
                 'id_setor' => $request->get('id_setor'),
+                'senha' => bcrypt($request->get('senha')),
             ]);
             return $this->successResponse($usuario, 'Usuario atualizado com sucesso', 200);
         }catch (\Exception $e){
@@ -141,12 +122,14 @@ class UsuarioControlador extends ApiControlador
             'data_nascimento' => 'required',
             'cpf' => 'required|unique:users',
             'id_setor' => 'required',
+            'senha' => 'required',
         ], [
             'nome.required' => 'Por favor envie o nome',
             'data_nascimento.required' => 'Por favor envie a data de nascimento',
             'cpf.required' => 'Por favor envie o CPF',
             'cpf.unique' => 'O CPF já existe',
-            'id_setor' => 'Por favor envie o setor'
+            'id_setor.required' => 'Por favor envie o setor',
+            'senha.required' => 'Por favor insira uma senha'
         ]);
     }
 
@@ -156,12 +139,14 @@ class UsuarioControlador extends ApiControlador
             'data_nascimento' => 'required',
             'cpf' => ['required', Rule::unique('users', 'cpf')->ignore($id)],
             'id_setor' => 'required',
+            'senha.required' => 'required',
         ], [
             'nome.required' => 'Por favor envie o nome',
             'data_nascimento.required' => 'Por favor envie a data de nascimento',
             'cpf.required' => 'Por favor envie o CPF',
             'cpf.unique' => 'O CPF já existe',
-            'id_setor' => 'Por favor envie o setor'
+            'id_setor.required' => 'Por favor envie o setor',
+            'senha.required' => 'Por favor insira uma senha'
         ]);
     }
 }
